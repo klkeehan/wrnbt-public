@@ -56,6 +56,29 @@ client.on('message', (channel, tags, message, self) => {
         }
         */
 
+	// owner/mod only command
+        if ((command === '=spam') && ((badge.match(bcRegex)) || (badge.match(mdRegex)))) {
+            var x = argC;
+
+            for(var i=0; i<x; i++) {
+                client.say(channel, argument);
+            }
+        }
+
+        // WIP
+        if (command === '=fish') {
+            var x = Math.floor(Math.random() * 10);
+
+            if (x == 0) { client.say(channel, 'you did not catch a fish  FeelsBadMan'); }
+            else if (x == 1) { client.say(channel, 'no luck, no fish  FeelsBadMan'); }
+            else if (x == 2) { client.say(channel, 'you failed to catch a fish  FeelsBadMan'); }
+            else if (x == 3) { client.say(channel, 'the fish are not biting  FeelsBadMan'); }
+            else if (x == 4) { client.say(channel, 'you caught a leaf  FeelsOkayMan FBBlock 🍂'); }
+            else if (x == 5) { client.say(channel, 'you caught a squid! FBCatch 🦑'); }
+            else if (x == 6) { client.say(channel, 'you caught a fish! FBCatch 🐟'); }
+            else if (x == 7) { client.say(channel, 'you caught a turtle! FBCatch 🐢'); }         
+        }
+
         /*
         // mirror stuff WIP
         var link;
