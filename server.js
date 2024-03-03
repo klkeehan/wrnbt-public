@@ -23,7 +23,7 @@ client.on('message', (channel, tags, message, self) => {
         var argC = msg[2]; // not in use rn
 
         if (command === '=commands') {
-            client.say(channel, 'nothing here yet FeelsDankMan');
+            client.say(channel, 'https://wrrens.gitbook.io/wrnbt/');
         }
 
         if ((command === '=echo') || (command === '=e')) {
