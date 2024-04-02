@@ -22,6 +22,11 @@ client.on('message', (channel, tags, message, self) => {
         var argument = msg[1];
         var argC = msg[2]; // not in use rn
 
+	// badge detect for owner/mod only commands
+        var badge = tags['badges-raw'];
+        var bcRegex = /^broadcaster/;
+        var mdRegex = /^moderator/;
+
         if (command === '=commands') {
             client.say(channel, 'https://wrrens.gitbook.io/wrnbt/');
         }
@@ -55,6 +60,19 @@ client.on('message', (channel, tags, message, self) => {
             client.say(channel, '@wrrens');
         }
         */
+	
+        if (command === '=tuck') {
+            client.say(channel, `${tags.username} tucked ${argument} into bed gn`);
+        }
+
+        if (command === '=emotes') {
+            client.say(channel, `https://emotes.raccatta.cc/twitch/${argument}`);
+        }
+
+        // personal command,, arg must use '7day' '1month' '3month' '6month' '12month' or 'overall'
+        if ((command === '=collage') && (tags.username === 'wrrens')) {
+            client.say(channel, `https://www.tapmusic.net/collage.php?user=wrrens&type=${argument}&size=3x3&caption=true`)
+        }
 
 	// owner/mod only command
         if ((command === '=spam') && ((badge.match(bcRegex)) || (badge.match(mdRegex)))) {
@@ -67,7 +85,7 @@ client.on('message', (channel, tags, message, self) => {
 
         // WIP
         if (command === '=fish') {
-            var x = Math.floor(Math.random() * 10);
+            var x = Math.floor(Math.random() * 7);
 
             if (x == 0) { client.say(channel, 'you did not catch a fish  FeelsBadMan'); }
             else if (x == 1) { client.say(channel, 'no luck, no fish  FeelsBadMan'); }
