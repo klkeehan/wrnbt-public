@@ -4,7 +4,7 @@ const tmi = require('tmi.js');
 
 const client = new tmi.Client({
     options: { debug: true },
-	channels: [ 'eyedazzler', 'wrnbt', 'suzyqpid' ],
+	channels: [ 'vwrens' ],
     identity: {
         username: process.env.TWITCH_BOT_USERNAME,
         password: process.env.TWITCH_OAUTH_TOKEN
@@ -13,6 +13,11 @@ const client = new tmi.Client({
 
 client.connect();
 
+// global variables
+var interval;
+var argW = '';
+var link;
+
 client.on('message', (channel, tags, message, self) => {
 
     if (!self) {
@@ -20,9 +25,9 @@ client.on('message', (channel, tags, message, self) => {
 
         var command = msg[0];
         var argument = msg[1];
-        var argC = msg[2]; // not in use rn
+        var argC = msg[2];
 
-	// badge detect for owner/mod only commands
+        // badge detect for owner/mod only commands
         var badge = tags['badges-raw'];
         var bcRegex = /^broadcaster/;
         var mdRegex = /^moderator/;
@@ -36,31 +41,35 @@ client.on('message', (channel, tags, message, self) => {
         }
 
         if (command === '=hello') {
-            client.say(channel, `hello ${tags.username} !`);
+            if (argument == null) {client.say(channel, `hello ${tags.username} !`)}
+            else {client.say(channel, `hello ${argument} !`)};
         }
 
         if (command === '=ping') {
-            client.say(channel, 'FeelsDankMan pong');
+            client.say(channel, 'FeelsDankMan 🏓 pong');
         }
 
         if (command === '=tf') {
             client.say(channel, `https://tools.2807.eu/follows?user=${argument}`);
         }
 
-        if ((command === 'c') || (command === '!c')) {
+        if ((command === 'c') || (command === '!c') || (command === 'C')) {
             client.say(channel, '!continue');
         }
 
-        if ((command === 'r') || (command === '!r')) {
+        if ((command === 'r') || (command === '!r') || (command ==='R')) {
             client.say(channel, '!restart');
         }
 
-        /*
-        if ((command === 'wrens') && (tags.username !== 'wrrens')) {
-            client.say(channel, '@wrrens');
+        // owner/mod only command
+        if ((command === '=spam') && ((badge.match(bcRegex)) || (badge.match(mdRegex)))) {
+            var x = argC;
+
+            for(var i=0; i<x; i++) {
+                client.say(channel, argument);
+            }
         }
-        */
-	
+
         if (command === '=tuck') {
             client.say(channel, `${tags.username} tucked ${argument} into bed gn`);
         }
@@ -74,85 +83,30 @@ client.on('message', (channel, tags, message, self) => {
             client.say(channel, `https://www.tapmusic.net/collage.php?user=wrrens&type=${argument}&size=3x3&caption=true`)
         }
 
-	// owner/mod only command
-        if ((command === '=spam') && ((badge.match(bcRegex)) || (badge.match(mdRegex)))) {
-            var x = argC;
-
-            for(var i=0; i<x; i++) {
-                client.say(channel, argument);
-            }
-        }
-
         // WIP
-        if (command === '=fish') {
-            var x = Math.floor(Math.random() * 7);
+        if (command === '=bug') {
+            var x = Math.floor(Math.random() * 15);
 
-            if (x == 0) { client.say(channel, 'you did not catch a fish  FeelsBadMan'); }
-            else if (x == 1) { client.say(channel, 'no luck, no fish  FeelsBadMan'); }
-            else if (x == 2) { client.say(channel, 'you failed to catch a fish  FeelsBadMan'); }
-            else if (x == 3) { client.say(channel, 'the fish are not biting  FeelsBadMan'); }
-            else if (x == 4) { client.say(channel, 'you caught a leaf  FeelsOkayMan FBBlock 🍂'); }
-            else if (x == 5) { client.say(channel, 'you caught a squid! FBCatch 🦑'); }
-            else if (x == 6) { client.say(channel, 'you caught a fish! FBCatch 🐟'); }
-            else if (x == 7) { client.say(channel, 'you caught a turtle! FBCatch 🐢'); }         
+            if (x == 0) { client.say(channel, 'you did not catch a bug notAlright'); }
+            else if (x == 1) { client.say(channel, 'you did not catch a bug notAlright'); }
+            else if (x == 2) { client.say(channel, 'yyou did not catch a bug notAlright'); }
+            else if (x == 3) { client.say(channel, 'you did not catch a bug notAlright'); }
+            else if (x == 4) { client.say(channel, 'you caught a caterpillar! FBCatch 🐛'); }
+            else if (x == 5) { client.say(channel, 'you caught a caterpillar! FBCatch 🐛'); }
+            else if (x == 6) { client.say(channel, 'you caught a caterpillar! FBCatch 🐛'); }
+            else if (x == 7) { client.say(channel, 'you caught a caterpillar! FBCatch 🐛'); }
+            else if (x == 8) { client.say(channel, 'you caught a beetle! FBCatch 🪲'); }  
+            else if (x == 9) { client.say(channel, 'you caught a beetle! FBCatch 🪲'); }
+            else if (x == 10) { client.say(channel, 'you caught a beetle! FBCatch 🪲'); }
+            else if (x == 11) { client.say(channel, 'you caught a ladybug! FBCatch 🐞'); }
+            else if (x == 12) { client.say(channel, 'you caught a ladybug! FBCatch 🐞'); }
+            else if (x == 13) { client.say(channel, 'you caught a spider! FBCatch 🕷️'); }
+            else if (x == 14) { client.say(channel, 'you caught a spider! FBCatch 🕷️'); }
+            else if (x == 15) { client.say(channel, 'you caught a butterfly! FBCatch 🦋')}       
         }
 
-        /*
-        // mirror stuff WIP
-        var link;
-
-        const regex = /^https:\/\/wos.gg\/r\/([a-zA-Z0-9-]+)/;
-
-        if (command.match(regex)) {
-            link = command;
-            client.say(channel, 'updated mirror ApuApproved');
-        }
-
-        // mirror update
-        if ((command === '=mirror') && (link != null)) {
-            client.say(channel, link);
-        }
-        */
-
-        // bw detection
-        function bwDetect() {
-            if ((command === '=bw') || (command === '!bw')) {
-                var word = argument;
-                var word2 = word.toUpperCase();
-                var word3 = word2.split('').join(' ');
-
-                return word3;
-            }
-        }
-
-        // bw repetition
-        function bwRep() {
-            var word = "" + bwDetect();
-            client.say(channel, word);
-        }
-       
-        // bw intervals
-        var id;
-
-        function runBw() {
-            bwRep();
-            id = setInterval(bwRep, 20000);
-            setTimeout(() => { clearInterval(id); }, 60000)
-        }
-
-        function stopBw() {
-            clearInterval(id);
-        }
-
-        if ((command === '=bw') || (command === '!bw')) {
-            if (id) {
-                clearInterval(id);
-            }
-            runBw();
-        }
-
-        if (command === '=stop') {
-            stopBw();
+        if (command === '=bugodds') {
+            client.say(channel, 'no bug - 4/15 | 🐛 - 4/15 | 🪲 - 3/15 | 🐞 - 2/15 | 🕷️ - 2/15 | 🦋 - 1/15')
         }
 
         // define command
@@ -171,6 +125,36 @@ client.on('message', (channel, tags, message, self) => {
             .catch(_ => {
                 client.say(channel, `couldn't find a definition for ${argument} FeelsDankMan`);
             })
+        }
+    
+        // mirror stuff WIP
+        const regex = /^https:\/\/wos.gg\/r\/([a-zA-Z0-9-]+)/;
+
+        if (command.match(regex)) {
+            link = command;
+            client.say(channel, 'updated mirror ApuApproved');
+        }
+
+        // mirror update
+        if ((command === '!mirror') || (command === '!link') || (command === '!wos')) {
+            client.say(channel, link);
+        }
+        
+        // BW COMMAND
+        if ((command === '!bw') || (command === '=bw')) {
+            clearInterval(interval);
+            argW = argument;
+
+            client.say(channel, argW);
+
+            interval = setInterval(() => {
+                client.say(channel, argW);
+            }, 20000);
+            setTimeout(() => { clearInterval(interval); }, 120000)
+        }
+
+        if (message === 'stop') {
+            clearInterval(interval);
         }
     }
 });
