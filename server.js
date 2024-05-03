@@ -143,7 +143,8 @@ client.on('message', (channel, tags, message, self) => {
         // BW COMMAND
         if ((command === '!bw') || (command === '=bw')) {
             clearInterval(interval);
-            argW = argument;
+            argW = argument.toUpperCase();
+            argW = argW.split('').join(' ');
 
             client.say(channel, argW);
 
