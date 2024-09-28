@@ -138,18 +138,25 @@ client.on('message', async (channel, tags, message, self) => {
             }
         }
 
+	// broadcaster/mod only command
         if ((command === '=pyramid') && ((badge.match(bcRegex)) || (badge.match(mdRegex)))) {
             var x = argA;
             var y = message.replace("=pyramid", "");
             y = y.replace(argA, "");
             var i;
 
-            for (i=1; i<=x; i++) {
-                client.say(channel, y.repeat(i));
+            if (x < 11) {
+                for (var i=0; i<=x; i++) {
+                    client.say(channel, y.repeat(i));
+                }
+
+                for (var i=x-1; i>=1; i--) {
+                    client.say(channel, y.repeat(i));
+                }
             }
 
-            for (i=x-1; i>=1; i--) {
-                client.say(channel, y.repeat(i));
+            else {
+                client.say(channel, '/me cannot send pyramid with width greater than 10 alr');
             }
         }
 
