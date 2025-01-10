@@ -4,7 +4,7 @@ const tmi = require('tmi.js');
 
 const client = new tmi.Client({
     options: { debug: true },
-	channels: [ 'wrnbt','suzyqpid', 'wrenqp' ],
+	channels: [ 'wrnbt','suzyqpid', 'liftlull', 'frogziiia', 'superbrxz' ],
     identity: {
         username: process.env.TWITCH_BOT_USERNAME,
         password: process.env.TWITCH_OAUTH_TOKEN
@@ -228,8 +228,8 @@ client.on('message', async (channel, tags, message, self) => {
                 client.say(channel, `/me couldn't find a definition for ${argA} FeelsDankMan`);
             })
         }
-	
-	// BW COMMAND
+        
+        // BW COMMAND
         if ((command === '!bw') || (command === '=bw')) {
             clearInterval(interval);
             argW = argA.toUpperCase();
